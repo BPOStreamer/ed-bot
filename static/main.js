@@ -1,6 +1,18 @@
-const {Builder, By, Key, until} = require('selenium-webdriver');
+const {Builder, By, Key, until} = require('selenium-webdriver'),
+      express = require('express'),
+      app = express();
 
-(async function example() {
+app.get('/', function(request, response){
+  response.sendFile('index.html', {
+    root: __dirname
+  });
+});
+
+app.listen(3000, function() {
+  console.log('running')
+})
+
+async function init() {
   let driver = await new Builder().forBrowser('chrome').build();
   try {
     await driver.get('https://ed.engdis.com/iighighschools#/home');
@@ -10,4 +22,4 @@ const {Builder, By, Key, until} = require('selenium-webdriver');
   } finally {
     await driver.quit();
   }
-})();
+};
