@@ -1,18 +1,4 @@
-const {Builder, By, Key, until} = require('selenium-webdriver'),
-      express = require('express'),
-      app = express();
-
-app.get('/', function(request, response){
-  response.sendFile('index.html', {
-    root: __dirname
-  });
-});
-
-app.listen(3000, function() {
-  console.log('running')
-})
-
-app.use(express.static('public'))
+const {Builder, By, Key, until} = require('selenium-webdriver');
 
 async function init() {
   let driver = await new Builder().forBrowser('chrome').build();
