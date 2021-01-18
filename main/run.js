@@ -11,5 +11,6 @@ app.listen(3000, function() {
   console.log('running')
 })
 
-app.use('/js', express.static(__dirname + '/main'));
+//app.use('/main', express.static(__dirname + '/js'));
+app.use('/js', express.static('main'));
 
