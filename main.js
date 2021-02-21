@@ -1,3 +1,4 @@
+
 const {Builder, By, Key, until, Actions, Browser} = require('selenium-webdriver'),
       chrome = require('selenium-webdriver/chrome'),
       screen = {
@@ -13,7 +14,6 @@ let driver = new Builder()
     loginButton = 0,
     progressTextBox = 0,
     data = 0,
-    homeOkBtn = 0,
     actions = driver.actions({async: false});
 
 module.exports = {
@@ -44,23 +44,41 @@ init: async function(username, password, unitNum) {
 
   await driver.get('https://ed.engdis.com/iighighschools#/home');
 
-  homeOkBtn = await driver.findElements(By.name('btnOk'));
-  if (homeOkBtn.length == 1) {
-    await actions.click(homeOkBtn[0]).perform();
-  }
+  let bodyTag = await driver.findElement(By.xpath('/html/body'));
+  await bodyTag.findElements(By.tagName('div')).then(async elements => {
+    console.log(elements.length)
+    if (elements.length === 2) {
+      await driver.wait(until.elementLocated(By.id('btnOk')))
+      let okBtn = await driver.findElement(By.id('btnOk'));
+      await driver.wait(until.elementIsVisible(okBtn));
+      await driver.wait(until.elementIsEnabled(okBtn));
+      await okBtn.click().then((placeholder) => {
+         placeholder = 'clicked'
+         //console.log(placeholder)
+         completeUnit(unitNum)
+      }).catch((err) => {
+         console.log(err)
+      });
 
-  completeUnit(unitNum)
+    } else {completeUnit(unitNum)}
+  })
 
 }
 };
 
 async function completeUnit(unitNum) {
-  let unitName = data.CourseProgressTree.Children[unitNum - 1].Name;
-  
-  await driver.findElement
+  let unitCodes = [];
+
+  await driver.wait(until.elementLocated(By.xpath("//img[@src='https://ed.engdis.com//Images/General/edusoftNew.svg']")))
+  await driver.wait(until.elementLocated(By.xpath(`/html/body/div/div[2]/div[1]/div/div/section[2]/div[3]/div[${unitNum}]/div/div[1]/div[2]/h3/span`)))
+  let unitNameSpan = await driver.findElement(By.xpath(`/html/body/div/div[2]/div[1]/div/div/section[2]/div[3]/div[${unitNum}]/div/div[1]/div[2]/h3/span`));
+  await actions.move({origin: unitNameSpan}).click().perform();
+  await driver.wait(until.elementLocated(By.xpath(`/html/body/div/div[2]/div[1]/div/div/section[2]/div[3]/div[${unitNum}]/div/div[1]/div[3]/div/div/div[1]/ul/li[1]/a/div[1]/span[2]`)))
+  let unitFirstLesson = await driver.findElement(By.xpath(`/html/body/div/div[2]/div[1]/div/div/section[2]/div[3]/div[${unitNum}]/div/div[1]/div[3]/div/div/div[1]/ul/li[1]/a/div[1]/span[2]`))
+  await actions.move({origin: unitFirstLesson}).click().perform();
 
   for (var i = 0; i < data.CourseProgressTree.Children[unitNum - 1].Children.length; i++) {
-      console.log(data.CourseProgressTree.Children[unitNum - 1].Children[i].Metadata.Code)
+      unitCodes.push(data.CourseProgressTree.Children[unitNum - 1].Children[i].Metadata.Code)
   }
 }
 
