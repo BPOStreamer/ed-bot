@@ -1,6 +1,7 @@
 # ed-bot
 <details>
   <summary>Instructions (en)</summary>
+  
   ## Installation and usage
   1. Download chromedriver.exe (version of chromedriver must be the same version as your installation of Chrome.)
      - To find Chrome's version:
