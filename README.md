@@ -3,11 +3,11 @@
   <summary>Instructions (en)</summary>
   
   ## Installation and usage
-  1. Download chromedriver.exe (version of chromedriver must be the same version as your installation of Chrome.)
+  1. Download chromedriver.exe (the version of chromedriver must be the same version as your Chrome installation)
      - To find Chrome's version:
        * Click on the Menu icon in the upper right corner of the screen. (kebab menu)
        * Click on Help, and then "**About Google Chrome**"
-       * Your Chrome browser version number can be found here.
+       * Your Chrome browser version number will be here.
   2. Make a folder and move chromedriver.exe in there. (ideally in C:)
   3. Open **System Properties**
   4. Open **Environment Variables** and add the path of chromedriver.exe's folder to **PATH**.
